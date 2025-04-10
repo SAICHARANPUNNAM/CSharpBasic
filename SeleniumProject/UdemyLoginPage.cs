@@ -24,9 +24,9 @@ namespace SeleniumProject
             dr.FindElement(By.CssSelector(".text-info span:nth-child(1) input")).Click();
             dr.FindElement(By.CssSelector(".text-info span:nth-child(1) input")).Click();
             dr.FindElement(By.CssSelector("#signInBtn")).Click();
-            //WebDriverWait wait  = new WebDriverWait(dr, TimeSpan.FromSeconds(8));
-            //wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible())
-            //dr.Close();
+            WebDriverWait wait  = new WebDriverWait(dr, TimeSpan.FromSeconds(8));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector("dsskldl;ksl"));
+            dr.Close();
         }
     }
 }
