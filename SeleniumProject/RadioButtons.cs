@@ -38,8 +38,8 @@ namespace SeleniumLearning
             dr.FindElement(By.CssSelector("#okayBtn")).Click();
             bool userButtonClick = dr.FindElement(By.Id("usertype")).Selected;
             // To verify boolen assertions we have to us "That is True"
-            Assert.That(userButtonClick, Is.True);
-            dr.Close();
+            Assert.That(userButtonClick, Is.False); //but it will print as true.
+           // dr.Close();
         }
     }
 }

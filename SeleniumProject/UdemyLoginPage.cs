@@ -36,7 +36,7 @@ namespace SeleniumProject
 
                     product.FindElement(By.CssSelector(".card-footer button")).Click();
                 }
-                TestContext.Progress.WriteLine(product.FindElement(By.CssSelector(".card-title a")).Text);
+                Console.WriteLine(product.FindElement(By.CssSelector(".card-title a")).Text);
             }
             
             dr.FindElement(By.PartialLinkText("Checkout")).Click();
