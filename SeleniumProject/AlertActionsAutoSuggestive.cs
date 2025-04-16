@@ -1,0 +1,7 @@
+﻿namespace SeleniumProject
+{
+    class AlertActionsAutoSuggestive
+    {
+
+    }
+}
