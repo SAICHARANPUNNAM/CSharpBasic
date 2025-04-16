@@ -8,7 +8,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Concepts\" />
+    <Compile Remove="Concepts\ChildClass.cs" />
+    <Compile Remove="Concepts\CreateArray.cs" />
+    <Compile Remove="Concepts\CreateArrayList.cs" />
+    <Compile Remove="Concepts\CreateClass.cs" />
+    <Compile Remove="Concepts\CreateConstructor.cs" />
+    <Compile Remove="Concepts\CreateObject.cs" />
+    <Compile Remove="Concepts\ParentClass.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Concepts\ChildClass.cs" />
+    <None Include="Concepts\CreateArray.cs" />
+    <None Include="Concepts\CreateArrayList.cs" />
+    <None Include="Concepts\CreateClass.cs" />
+    <None Include="Concepts\CreateConstructor.cs" />
+    <None Include="Concepts\CreateObject.cs" />
+    <None Include="Concepts\ParentClass.cs" />
   </ItemGroup>
 
 </Project>
