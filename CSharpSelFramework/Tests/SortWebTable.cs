@@ -3,11 +3,12 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System.Collections;
 
-namespace SeleniumProject
+namespace CSharpSelFramework
 {
 
-    public class SortWebTable:Base
+    public class SortWebTable : Base
     {
+
         [Test]
         public void SortTable()
         {
@@ -40,7 +41,7 @@ namespace SeleniumProject
 
             }
             Assert.AreEqual(arrayList, arrayList2);
-            dr.Close();
+
         }
     }
 }

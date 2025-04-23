@@ -12,32 +12,31 @@ namespace CSharpSelFramework.Utilities
         [SetUp]
         public void StartBrowser()
         {
-            // we will configration something Global entire the application using file-->General-->appconfin..
-            //Add package system.configuration manager..
+            // We can configuration all file golbally in to the application--NewItem->general->App-confi..select
+            /*Add this on app confi--<appSettings>
+            <add key = "browser" value="Chrome"/>
+            </appSettings>*/
             string browserName = ConfigurationManager.AppSettings["browser"];
-
+            // window confi also you need to add in editfile in project you add two lines of code..to run appsetting
             InitBrowser(browserName);
-            dr.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             dr.Manage().Window.Maximize();
+            dr.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             dr.Navigate().GoToUrl("https://rahulshettyacademy.com/seleniumPractise/#/");
-
         }
         public void InitBrowser(string browserName)
-        {          //Factory design pattern
+        {
             switch (browserName)
             {
-                case "Firefox":
-                    dr = new FirefoxDriver();
-                    break;
                 case "Chrome":
                     dr = new ChromeDriver();
                     break;
-
+                case "FireFox":
+                    dr = new FirefoxDriver();
+                    break;
                 case "Edge":
                     dr = new EdgeDriver();
                     break;
             }
-
 
         }
         [TearDown]
