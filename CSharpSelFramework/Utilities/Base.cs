@@ -30,7 +30,7 @@ namespace CSharpSelFramework.Utilities
                 case "Chrome":
                     dr = new ChromeDriver();
                     break;
-                case "FireFox":
+                case "Firefox":
                     dr = new FirefoxDriver();
                     break;
                 case "Edge":
