@@ -8,7 +8,9 @@ namespace CSharpSelFramework.Utilities
 {
     public class Base
     {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         public IWebDriver dr;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         [SetUp]
         public void StartBrowser()
         {
@@ -21,7 +23,11 @@ namespace CSharpSelFramework.Utilities
             InitBrowser(browserName);
             dr.Manage().Window.Maximize();
             dr.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            dr.Navigate().GoToUrl("https://rahulshettyacademy.com/seleniumPractise/#/");
+            dr.Navigate().GoToUrl("https://rahulshettyacademy.com/loginpagePractise/");
+        }
+        public IWebDriver getDriver()
+        {
+            return dr;
         }
         public void InitBrowser(string browserName)
         {
