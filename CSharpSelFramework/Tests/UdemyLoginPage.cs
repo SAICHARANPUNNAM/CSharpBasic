@@ -1,7 +1,6 @@
 ﻿using CSharpSelFramework.pageObjects;
 using CSharpSelFramework.Utilities;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 
 namespace CSharpSelFramework
 {
@@ -10,12 +9,17 @@ namespace CSharpSelFramework
 
 
         [Test]
-        public void EndToEndFlow()
+        //[TestCase("rahulshettyacademy","learning")]
+        //[TestCase("saicharan", "Charansai@0011")]
+        [TestCaseSource("AddTestDataConfig")]
+
+        public void EndToEndFlow(string username, string password)
         {
             string[] expectedProducts = { "iphone X", "Nokia Edge", "Blackberry" }; // Fixed typo in variable name
             string[] actualProducts = new string[3];
             LoginPage loginPage = new LoginPage(getDriver());
-            ProductsPage productPage = loginPage.validLogin("rahulshettyacademy", "learning");
+            //ProductsPage productPage = loginPage.validLogin("rahulshettyacademy", "learning");
+            ProductsPage productPage = loginPage.validLogin(username, password);
             productPage.waitForPageDisplay();
             // loginPage.getUserName().SendKeys("rahulshettyacademy");
 
@@ -44,19 +48,24 @@ namespace CSharpSelFramework
             }
             Assert.AreEqual(expectedProducts, actualProducts);
             // now click on checkout
-            checkoutPage.checkoutClick();
-            dr.FindElement(By.Id("country")).SendKeys("Ind");
-            WebDriverWait wait = new WebDriverWait(dr, TimeSpan.FromSeconds(10));
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.LinkText("India")));
-            dr.FindElement(By.LinkText("India")).Click();
-            dr.FindElement(By.CssSelector("label[for='checkbox2']")).Click();
-            dr.FindElement(By.CssSelector("input[value='Purchase']")).Click();
+            PurchasePage purchasePage = checkoutPage.checkoutClick();
+            purchasePage.getLocationEnter().SendKeys("Ind");
+            purchasePage.waitForElementDisplay();
+            purchasePage.clickOnElements();
+
+
             string successTxt = dr.FindElement(By.CssSelector("div.alert ")).Text;
             Console.WriteLine(successTxt);
             // now we will check success test present or not
             StringAssert.Contains("Success", successTxt);
             Thread.Sleep(3000);
             dr.Close();
+        }
+        public static IEnumerable<TestCaseData> AddTestDataConfig()
+        {
+            yield return new TestCaseData("rahulshettyacademy", "learning");
+            yield return new TestCaseData("sai charan", "charansai");
+            yield return new TestCaseData("rahulshademy", "learning");
         }
     }
 }

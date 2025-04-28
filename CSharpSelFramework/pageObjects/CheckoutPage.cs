@@ -19,9 +19,10 @@ namespace CSharpSelFramework.pageObjects
         {
             return checkoutCards;
         }
-        public void checkoutClick()
+        public PurchasePage checkoutClick()
         {
             checkoutButton.Click();
+            return new PurchasePage(dr);
         }
     }
 }
