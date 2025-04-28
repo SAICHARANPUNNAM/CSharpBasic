@@ -1,53 +1,46 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
+﻿using CSharpSelFramework.pageObjects;
+using CSharpSelFramework.Utilities;
+using OpenQA.Selenium;
 
 namespace CSharpSelFramework
 {
-    class UdemyLoginPage
+    class UdemyLoginPage : Base
     {
-        IWebDriver dr;
-        [SetUp]
-        public void StartBrowser()
-        {
-            dr = new ChromeDriver();
-           
-            dr.Manage().Window.Maximize();
-            dr.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            dr.Navigate().GoToUrl("https://rahulshettyacademy.com/loginpagePractise/");
 
-        }
+
         [Test]
-        public void EndToEndFlow()
+        //[TestCase("rahulshettyacademy","learning")]
+        //[TestCase("saicharan", "Charansai@0011")]
+        [TestCaseSource("AddTestDataConfig")]
+
+        public void EndToEndFlow(string username, string password)
         {
             string[] expectedProducts = { "iphone X", "Nokia Edge", "Blackberry" }; // Fixed typo in variable name
             string[] actualProducts = new string[3];
-            dr.FindElement(By.CssSelector("#username")).SendKeys("rahulshettyacademy");
-            dr.FindElement(By.CssSelector("#password")).SendKeys("learning");
-            dr.FindElement(By.CssSelector(".text-info span:nth-child(1) input")).Click();
-            dr.FindElement(By.CssSelector("#signInBtn")).Click();
+            LoginPage loginPage = new LoginPage(getDriver());
+            //ProductsPage productPage = loginPage.validLogin("rahulshettyacademy", "learning");
+            ProductsPage productPage = loginPage.validLogin(username, password);
+            productPage.waitForPageDisplay();
+            // loginPage.getUserName().SendKeys("rahulshettyacademy");
 
-            WebDriverWait wait = new WebDriverWait(dr, TimeSpan.FromSeconds(10));
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.PartialLinkText("Checkout")));
-            IList<IWebElement> products = dr.FindElements(By.TagName("app-card"));
+            IList<IWebElement> products = productPage.getCards();
             foreach (IWebElement product in products)
             {
-                Thread.Sleep(3000);
-                if (expectedProducts.Contains(product.FindElement(By.CssSelector(".card-title a")).Text)) // Fixed typo in variable name
+
+                if (expectedProducts.Contains(product.FindElement(productPage.getCardTitle()).Text)) // Fixed typo in variable name
                 {
 
                     // IWebElement button = product.FindElement(By.CssSelector(".card-footer button"));
                     //((IJavaScriptExecutor)dr).ExecuteScript("arguments[0].click();", button);
                     //IJavaScriptExecutor js = (IJavaScriptExecutor)dr;
                     //js.ExecuteScript("arguments[0].click();", button);
-                    product.FindElement(By.CssSelector(".card-footer button")).Click();
+                    product.FindElement(productPage.addToCartButton()).Click();
                 }
                 Console.WriteLine(product.FindElement(By.CssSelector(".card-title a")).Text);
             }
+            CheckoutPage checkoutPage = productPage.checkout();
 
-            dr.FindElement(By.PartialLinkText("Checkout")).Click();
-
-            IList<IWebElement> checkoutList = dr.FindElements(By.CssSelector("h4 a"));
+            IList<IWebElement> checkoutList = checkoutPage.getCards();
             for (int i = 0; i < checkoutList.Count; i++)
             {
                 actualProducts[i] = checkoutList[i].Text;
@@ -55,17 +48,24 @@ namespace CSharpSelFramework
             }
             Assert.AreEqual(expectedProducts, actualProducts);
             // now click on checkout
-            dr.FindElement(By.CssSelector(".btn-success")).Click();
-            dr.FindElement(By.Id("country")).SendKeys("Ind");
-            dr.FindElement(By.LinkText("India")).Click();
-            dr.FindElement(By.CssSelector("label[for='checkbox2']")).Click();
-            dr.FindElement(By.CssSelector("input[value='Purchase']")).Click();
+            PurchasePage purchasePage = checkoutPage.checkoutClick();
+            purchasePage.getLocationEnter().SendKeys("Ind");
+            purchasePage.waitForElementDisplay();
+            purchasePage.clickOnElements();
+
+
             string successTxt = dr.FindElement(By.CssSelector("div.alert ")).Text;
             Console.WriteLine(successTxt);
             // now we will check success test present or not
             StringAssert.Contains("Success", successTxt);
             Thread.Sleep(3000);
             dr.Close();
+        }
+        public static IEnumerable<TestCaseData> AddTestDataConfig()
+        {
+            yield return new TestCaseData("rahulshettyacademy", "learning");
+            yield return new TestCaseData("sai charan", "charansai");
+            yield return new TestCaseData("rahulshademy", "learning");
         }
     }
 }
